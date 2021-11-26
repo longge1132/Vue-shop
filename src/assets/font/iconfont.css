@@ -1,0 +1,49 @@
+@font-face {
+  font-family: "iconfont"; /* Project id  */
+  src: url('iconfont.ttf?t=1637913658851') format('truetype');
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-add-cart:before {
+  content: "\e742";
+}
+
+.icon-arrow-right:before {
+  content: "\e743";
+}
+
+.icon-arrow-left:before {
+  content: "\e744";
+}
+
+.icon-arrow-up:before {
+  content: "\e745";
+}
+
+.icon-category:before {
+  content: "\e747";
+}
+
+.icon-arrow-down:before {
+  content: "\e665";
+}
+
+.icon-star-full:before {
+  content: "\e9a1";
+}
+
+.icon-geren:before {
+  content: "\e70d";
+}
+
+.icon-gouwu:before {
+  content: "\e722";
+}
+
