@@ -9,6 +9,12 @@ import './assets/font/iconfont.css'
 import './assets/css/global.css'
 // 配置请求的路径
 axios.defaults.baseURL = 'http://127.0.0.1:8888/api/private/v1/'
+axios.interceptors.request.use(config => {
+  // console.log(config)
+  // 封装请求头，在发送之前将token信息封装在header中
+  config.headers.Authorization = window.sessionStorage.getItem('token')
+  return config
+})
 Vue.prototype.$http = axios
 
 Vue.config.productionTip = false
