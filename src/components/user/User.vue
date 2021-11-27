@@ -185,7 +185,7 @@ export default {
       if (res.meta.status !== 200) return this.$message.error('获取用户列表失败')
       this.userList = res.data.users
       this.total = res.data.total
-      console.log(this.userList, this.total)
+      // console.log(this.userList, this.total)
     },
     // 下面两个分别控制页脚的页面切换功能，
     handleSizeChange (newSize) {
@@ -200,7 +200,7 @@ export default {
     // 改变用户状态的功能
     async userStateChanged (userinfo) {
       const { data: res } = await this.$http.put(`users/${userinfo.id}/state/${userinfo.mg_state}`)
-      console.log(res)
+      // console.log(res)
       if (res.meta.status !== 200) {
         userinfo.mg_state = !userinfo.mg_state
         return this.$message.error(res.meta.msg)
@@ -230,7 +230,7 @@ export default {
     async changeUser (id) {
       // console.log(value)
       const { data: res } = await this.$http.get(`users/${id}`)
-      console.log(res)
+      // console.log(res)
       if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
       this.editUser = res.data
       this.changeDialog = true
@@ -258,7 +258,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).catch(err => err)
-      console.log(res)
+      // console.log(res)
       // 如果用户确认删除，返回的时字符串 confirm， 取消则返回 cancel
       if (res !== 'confirm') {
         return this.$message.info('已取消删除')
