@@ -18,18 +18,21 @@
         :unique-opened="true"
         :collapse-transition="false"
         :collapse="!isFold"
+        :router="true"
+        :default-active="activePath"
         background-color="skyblue"
         text-color="#fff"
         active-text-color="#ffd04b">
 <!--        一级菜单-->
-        <el-submenu :index="item.id + ''" v-for="(item,index) in menulist" :key="item.id">
+        <el-submenu :index="'/'+item.path" v-for="(item,index) in menulist" :key="item.id">
 <!--          一级菜单模板区域 template中 包括图标 和文本-->
           <template slot="title">
             <i :class="iconList[index]"></i>
             <span>{{item.authName}}</span>
           </template>
 <!--          二级菜单区域， template中是模板-->
-          <el-menu-item :index="subitem.id.toString()" v-for="subitem in item.children" :key="subitem.id">
+          <el-menu-item :index="'/'+subitem.path" v-for="subitem in item.children"
+                        :key="subitem.id" @click="saveRouter('/' + subitem.path)">
             <template slot="title">
               <i class="el-icon-menu"></i>
               <span>{{subitem.authName}}</span>
@@ -59,7 +62,8 @@ export default {
         'el-icon-s-marketing',
         'el-icon-toilet-paper'
       ],
-      isFold: true
+      isFold: true,
+      activePath: ''
     }
   },
   methods: {
@@ -76,10 +80,15 @@ export default {
     },
     collapseNav () {
       this.isFold = !this.isFold
+    },
+    saveRouter (routerUrl) {
+      window.sessionStorage.setItem('routerUrl', routerUrl)
+      this.activePath = routerUrl
     }
   },
   created () {
     this.getMenuList()
+    this.activePath = window.sessionStorage.getItem('routerUrl')
   }
 }
 </script>
