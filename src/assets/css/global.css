@@ -11,3 +11,7 @@ body,
 .el-form-item__label{
     font-size: 12px !important;
 }
+.el-breadcrumb{
+    font-size: 12px;
+    margin-bottom: 15px;
+}
