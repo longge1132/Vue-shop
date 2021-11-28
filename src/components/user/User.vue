@@ -38,7 +38,7 @@
             <el-button type="primary" icon="el-icon-edit" size="mini" @click="changeUser(scope.row.id)"></el-button>
             <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteUser(scope.row.id)"></el-button>
             <el-tooltip effect="dark" content="分配角色" placement="top" :enterable="false">
-              <el-button type="warning" icon="el-icon-setting" size="mini"></el-button>
+              <el-button type="warning" icon="el-icon-setting" size="mini" @click="setUserRole(scope.row)"></el-button>
             </el-tooltip>
           </template>
         </el-table-column>
@@ -104,6 +104,30 @@
       <span slot="footer" class="dialog-footer">
     <el-button @click="changeDialog = false">取 消</el-button>
     <el-button type="primary" @click="changeUserInfo(editUser.id)">确 定</el-button>
+  </span>
+    </el-dialog>
+<!--    分配用户角色信息任务窗口-->
+    <el-dialog
+      title="分配用户角色" width="50%"
+      :visible.sync="roleDialogVs"
+    @close="roleChangeColse">
+      <!--      表单主体部分-->
+      <!--      修改表单信息-->
+      <p>当前的用户：{{roleTempInfo.username}}</p>
+      <p>当前的角色：{{roleTempInfo.role_name}}</p>
+      <p>新分配角色：<el-select v-model="selectId" placeholder="请选择分配角色">
+        <el-option
+          v-for="item in rolesList"
+          :key="item.id"
+          :label="item.roleName"
+          :value="item.id">
+        </el-option>
+      </el-select></p>
+
+      <!--          表单尾部信息，控制按钮-->
+      <span slot="footer" class="dialog-footer">
+    <el-button @click="roleDialogVs = false">取 消</el-button>
+    <el-button type="primary" @click="setUserNewRole">确 定</el-button>
   </span>
     </el-dialog>
   </div>
@@ -175,7 +199,11 @@ export default {
           { required: true, message: '请输入手机号码', trigger: 'blur' },
           { min: 11, max: 11, message: '请输入正确手机号码', trigger: 'blur' }
         ]
-      }
+      },
+      roleDialogVs: false,
+      roleTempInfo: {},
+      rolesList: {},
+      selectId: ''
     }
   },
   methods: {
@@ -267,8 +295,32 @@ export default {
       if (res1.meta.status !== 200) return this.$message.error('删除失败')
       await this.getUserList()
       this.$message.success('删除成功')
+    },
+    // 为用户分配角色,弹出任务窗口，请求权限数据列表
+    async setUserRole (roleInfo) {
+      this.roleTempInfo = roleInfo
+      // console.log(this.roleTempInfo)
+      const { data: res } = await this.$http.get('roles')
+      if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
+      // this.$message.success(res.meta.msg)
+      this.rolesList = res.data
+      // console.log(res.data)
+      this.roleDialogVs = true
+    },
+    // 确认新的数据分配完成
+    async setUserNewRole () {
+      if (!this.selectId) return this.$message.error('请选择新的角色')
+      const { data: res } = await this.$http.put(`users/${this.roleTempInfo.id}/role`,
+        { rid: this.selectId })
+      if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
+      this.$message.success(res.meta.msg)
+      await this.getUserList()
+      this.roleDialogVs = false
+    },
+    roleChangeColse () {
+      this.selectId = ''
+      this.roleTempInfo = {}
     }
-
   },
   created () {
     this.getUserList()
