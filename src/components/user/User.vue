@@ -336,7 +336,4 @@ export default {
     margin-top: 15px;
     font-size: 12px;
   }
-  .block{
-    margin-top: 15px;
-  }
 </style>
