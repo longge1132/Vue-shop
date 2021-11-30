@@ -13,12 +13,24 @@ import VueQuillEditor from 'vue-quill-editor'
 import 'quill/dist/quill.core.css' // import styles
 import 'quill/dist/quill.snow.css' // for snow theme
 import 'quill/dist/quill.bubble.css' // for bubble theme
+// 11Nprogress是一个可视化的网页请求进度的小模块，  用 Nprogress.start() Yu Nprogress.done()
+// 分别放在网页请求的请求时 与成功时
+import Nprogress from 'nprogress'
+import 'nprogress/nprogress.css'
 // 配置请求的路径
 axios.defaults.baseURL = 'http://127.0.0.1:8888/api/private/v1/'
+
 axios.interceptors.request.use(config => {
   // console.log(config)
+  Nprogress.start()
   // 封装请求头，在发送之前将token信息封装在header中
   config.headers.Authorization = window.sessionStorage.getItem('token')
+  return config
+})
+axios.interceptors.response.use(config => {
+  // console.log(config)
+  // 封装请求头，在发送之前将token信息封装在header中
+  Nprogress.done()
   return config
 })
 Vue.prototype.$http = axios
